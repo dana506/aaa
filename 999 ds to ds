@@ -1,0 +1,49 @@
+DllNode* convertHtToList(HT* table, DllNode* list, int price) {
+	int index = 0;
+	if (table) {
+		Node* auxNode = table->rooms[index];
+		for (int i = 0; i < table->size; i++)
+		{
+			auxNode = table->rooms[index];
+			while (auxNode) {
+				if (auxNode->info->price > price) {
+					if (list == NULL) {
+						list = createNodeList(auxNode->info, NULL, NULL);
+					}
+					else {
+						DllNode* newNode = createNodeList(auxNode->info, list, NULL);
+						list->pPrev = newNode;
+						list = newNode;
+					}
+				}
+				auxNode = auxNode->pNext;
+			}
+			index++;
+		}
+	}
+	return list;
+}
+
+void main(){
+...............
+printf("\n	<-----INITIAL HASHTABLE----->\n\n");
+	printHt(&table);
+	printf("\n	<-----COUNTING ROOMS ON GIVEN FLOOR----->\n\n");
+	countRoomsPerFloor(&table, 4);
+	DllNode* head = NULL;
+	head = convertHtToList(&table, head, 200);
+	DllNode* auxHead = head;
+	printf("\n	<-----PRINTING THE LIST----->\n\n");
+	while (auxHead) {
+		printInfo(auxHead->info);
+		auxHead = auxHead->pNext;
+	}
+	printf("\n	<-----PRINTING THE LIST AFTER DELETION----->\n\n");
+	deleteRooms(&head, "SUITE");
+	auxHead = head;
+	while(auxHead) {
+		printInfo(auxHead->info);
+		auxHead = auxHead->pNext;
+	}
+}
+
